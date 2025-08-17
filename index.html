@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto Adote uma Rua</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      background-color: #006400;
+      padding: 10px 20px;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img {
+      height: 50px;
+      margin-right: 15px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-right: 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #006400;
+      margin-bottom: 10px;
+    }
+
+    /* layout mapa + lista */
+    .map-cities-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    #map {
+      height: 350px;
+      flex: 1;
+      min-width: 300px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .city-list {
+      flex: 1;
+      min-width: 280px;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      overflow-y: auto;
+      max-height: 350px;
+    }
+
+    .city-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .city-list li {
+      margin-bottom: 8px;
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+
+    footer {
+      background: #006400;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo Projeto Adote uma Rua">
+    <nav>
+      <a href="#cidades">Cidades Participantes</a>
+      <a href="#resumo">Resumo</a>
+      <a href="#objetivo">Objetivo</a>
+      <a href="#metas">Metas de Apoio</a>
+      <a href="#recompensas">Recompensas</a>
+      <a href="#porqueeapoiar">Por que apoiar</a>
+    </nav>
+  </header>
+<section id="cidades">
+  <h2>Cidades Participantes</h2>
+  <div class="map-cities-container">
+    <div id="map"></div>
+    <div class="city-list">
+      <ul>
+        <li><a href="https://www.openstreetmap.org/relation/6188367" target="_blank">Recife (PE) — Mobilização comunitária em áreas urbanas</a></li>
+        <li><a href="https://www.openstreetmap.org/relation/298285" target="_blank">São Paulo (SP) — Revitalização de praças e periferias</a></li> <!-- OSM Relation ID para São Paulo -->
+        <!-- Adicione os demais 28 abaixo com links atualizados -->
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+
+  <section id="resumo">
+    <h2>Resumo</h2>
+    <p>O Projeto Adote uma Rua busca mobilizar cidadãos para ajudar a melhorar, preservar e valorizar ruas em diferentes cidades do Brasil. O projeto terá duração de 3 meses.</p>
+  </section>
+
+  <section id="objetivo">
+    <h2>Objetivo</h2>
+    <p>Promover a revitalização urbana, engajamento comunitário e valorização dos espaços públicos.</p>
+  </section>
+
+  <section id="metas">
+    <h2>Metas de Apoio</h2>
+    <p>Meta 1: Alcance inicial de 500 apoiadores.<br>
+       Meta 2: Expansão para mais 15 cidades.<br>
+       Meta 3: Finalização do projeto piloto em 3 meses.</p>
+  </section>
+
+  <section id="recompensas">
+    <h2>Recompensas</h2>
+    <p>Certificados digitais, menção no site e brindes personalizados para apoiadores.</p>
+  </section>
+
+  <section id="porqueeapoiar">
+    <h2>Por que apoiar</h2>
+    <p>Seu apoio ajuda a transformar a cidade, trazendo melhorias visíveis e fortalecendo a comunidade.</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Projeto Adote uma Rua</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Inicializa mapa
+    var map = L.map('map').setView([-15.78, -47.93], 4);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap colaboradores'
+    }).addTo(map);
+
+    // Lista de cidades com coordenadas
+    var cidades = [
+      ["São Paulo/SP", -23.5505, -46.6333],
+      ["Rio de Janeiro/RJ", -22.9068, -43.1729],
+      ["Belo Horizonte/MG", -19.9167, -43.9345],
+      ["Recife/PE", -8.0476, -34.8770],
+      ["Salvador/BA", -12.9777, -38.5016],
+      ["Fortaleza/CE", -3.7319, -38.5267],
+      ["Curitiba/PR", -25.4284, -49.2733],
+      ["Porto Alegre/RS", -30.0346, -51.2177],
+      ["Manaus/AM", -3.1190, -60.0217],
+      ["Belém/PA", -1.4550, -48.5024],
+      ["Goiânia/GO", -16.6869, -49.2648],
+      ["Florianópolis/SC", -27.5954, -48.5480],
+      ["Vitória/ES", -20.3155, -40.3128],
+      ["Natal/RN", -5.7945, -35.2110],
+      ["Teresina/PI", -5.0919, -42.8034],
+      ["Campo Grande/MS", -20.4697, -54.6201],
+      ["João Pessoa/PB", -7.1150, -34.8641],
+      ["Aracaju/SE", -10.9472, -37.0731],
+      ["Cuiabá/MT", -15.6010, -56.0974],
+      ["Macapá/AP", 0.0349, -51.0694],
+      ["Rio Branco/AC", -9.9749, -67.8243],
+      ["Palmas/TO", -10.1840, -48.3336],
+      ["São Luís/MA", -2.5307, -44.3068],
+      ["Maceió/AL", -9.6498, -35.7089],
+      ["Porto Velho/RO", -8.7619, -63.9039],
+      ["Boa Vista/RR", 2.8238, -60.6753],
+      ["Santos/SP", -23.9608, -46.3336],
+      ["Campinas/SP", -22.9099, -47.0626],
+      ["Uberlândia/MG", -18.9186, -48.2772],
+      ["Vitória de Santo Antão/PE", -8.1195, -35.2913]
+    ];
+
+    // Adiciona pinos
+    cidades.forEach(function(cidade) {
+      L.marker([cidade[1], cidade[2]]).addTo(map)
+        .bindPopup(cidade[0]);
+    });
+  </script>
+</body>
+</html>
+
